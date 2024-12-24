@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rubik', 'Times New Roman', Times, serif,sans-serif;;
+}
+
+
+section {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px;
+}
+
+section h2{
+    align-self: center;
+}
+
+header, section {
+    box-shadow: 1px 2px 5px black;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+header {
+    background-color:darkblue
+}
+
+header h1 {
+    color:azure;
+    text-align: center;
+}
+
+section h2 {
+    color:darkblue;
+    text-align:center;
+}
+
+div.leftSide, div.rightSide {
+    display: flex;
+    flex-direction: column;
+}
+
+form#bookForm div label {
+    margin-block:10px ;
+}
+
+label {
+    font-size: 20px;    
+}
+
+input {
+    padding: 8px;
+    border-radius: 8px ;
+    font-size: 20px;
+    width: 100%;
+}
+
+section.addBook button {
+    width: 100%;
+    margin-left: 0;
+}
+
+div#checkBox {
+    display: flex;
+}
+
+div#checkBox input#bookFormIsComplete {
+    width: 20px;
+}
+
+section.findBook button {
+    margin-left: 0;
+}
+
+form#searchBook div#findInput {
+    display: flex; 
+    gap: 10px;
+}
+
+section button {  
+    font-size: 20px;
+    padding: 8px;
+    margin: 10px;
+    font-weight: bolder;
+    background-color: darkblue;
+    border-radius: 8px;
+    color: white;
+    transition: transform 0.1s ease-in-out;
+}
+
+section button:hover {
+    transform: scale(1.05);
+}
+
+.dataUnfinished, .dataFinished {
+    box-shadow: 1px 2px 5px darkblue;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.dataUnfinished {
+    box-shadow: 1px 2px 5px darkred ;
+}
