@@ -20,6 +20,24 @@
     </header>
 
     <main>
+      <div id="forEditBook">
+        <div class="inputEdit">
+          <label for="bookFormTitle">Judul</label>
+          <input id="editBookFormTitle" type="text" required data-testid="bookFormTitleInput" />
+        </div>
+        <div class="inputEdit">
+          <label for="bookFormAuthor">Penulis</label>
+          <input id="editBookFormAuthor" type="text" required data-testid="bookFormAuthorInput" />
+        </div>
+        <div class="inputEdit">
+          <label for="bookFormYear">Tahun</label>
+          <input id="editBookFormYear" type="number" required data-testid="bookFormYearInput" />
+        </div>
+        <div class="button">
+          <button id="save">Save</button>
+          <button id="cancel">Cancel</button>
+        </div>
+      </div>
       <div class="leftSide">
         <section class = 'addBook'>
           <h2>Tambah Buku Baru</h2>
@@ -45,7 +63,7 @@
               />
             </div>
             <button id="bookFormSubmit" type="submit" data-testid="bookFormSubmitButton">
-              Masukkan Buku ke rak <span>Belum selesai dibaca</span>
+              Masukkan Buku ke rak <span id = 'textSpan'>Belum selesai dibaca</span>
             </button>
           </form>
         </section>
@@ -61,6 +79,9 @@
               </button>
             </div>
           </form>
+          <div id="returnFindContainer">
+            
+          </div>
         </section>
       </div>
 
