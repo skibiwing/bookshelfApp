@@ -68,6 +68,11 @@ section.addBook button {
     margin-left: 0;
 }
 
+button#bookFormSubmit {
+    background-color: darkblue;
+}
+
+
 div#checkBox {
     display: flex;
 }
@@ -108,4 +113,43 @@ section button:hover {
 
 .dataUnfinished {
     box-shadow: 1px 2px 5px darkred ;
+}
+
+div#incompleteBookList div.dataUnfinished, div#completeBookList div.dataFinished {
+    margin: 20px;
+}
+
+div#forEditBook {
+    position: fixed;
+    border-radius: 20px;
+    padding: 10px;
+    right: 0;
+    top: 30%;
+    display: none;
+    background-color: darkblue;
+}
+
+div.inputEdit label {
+    color: aliceblue;
+}
+
+
+button#save {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
+    position: relative;
+    background-color: darkgreen;
+    color: aliceblue;
+    border-radius: 20px;
+}
+
+button#cancel {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px;
+    position: relative;
+    background-color: darkred;
+    color: aliceblue;
+    border-radius: 20px;
 }
