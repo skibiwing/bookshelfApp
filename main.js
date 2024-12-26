@@ -277,7 +277,7 @@ function searchForBook() {
           <p><strong>Title:</strong> ${datas.title}</p>
           <p><strong>Author:</strong> ${datas.author}</p>
           <p><strong>Year:</strong> ${datas.year}</p>
-          <p><strong>Status:</strong> ${datas.isComplete ? 'Completed' : 'Not Completed'}</p>
+          <p><strong>Status:</strong> ${datas.isComplete ? 'Selesai' : 'Belum selesai'}</p>
         `;
     }
     else {
