@@ -9,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-
-    <!-- Impor script kamu di sini -->
-    <!-- Lampirkan `defer` jika pemanggilan dilakukan dalam <head> -->
+    
     <script defer src="main.js"></script>
   </head>
   <body>
@@ -77,11 +75,11 @@
               <button id="searchSubmit" type="submit" data-testid="searchBookFormSubmitButton">
                 Cari
               </button>
+              <button id="searchClear" type="submit">
+                &#10006
+              </button>
             </div>
-          </form>
-          <div id="returnFindContainer">
-            
-          </div>
+          </form> 
         </section>
       </div>
 
@@ -90,11 +88,7 @@
           <h2>Belum selesai dibaca</h2>
         
           <div id="incompleteBookList" data-testid="incompleteBookList">
-            <!-- 
-              Ini adalah struktur HTML untuk masing-masing buku.
-              Pastikan susunan elemen beserta atribut data-testid menyesuaikan seperti contoh ini.
-            -->
-          
+         
           </div>
         </section>
       
@@ -102,10 +96,7 @@
           <h2>Selesai dibaca</h2>
         
           <div id="completeBookList" data-testid="completeBookList">
-            <!-- 
-              Ini adalah struktur HTML untuk masing-masing buku.
-              Pastikan susunan elemen beserta atribut data-testid menyesuaikan seperti contoh ini.
-            -->
+       
           </div>
         </section>
       </div>
