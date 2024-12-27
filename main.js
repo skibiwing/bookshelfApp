@@ -1,13 +1,3 @@
-/*
-{
-  id: string | number,
-  title: string,
-  author: string,
-  year: number,
-  isComplete: boolean,
-}
-*/ 
-
 document.addEventListener('DOMContentLoaded', ()=>{
     const submitForm = document.getElementById('bookForm');
     submitForm.addEventListener('submit',(event)=>{
@@ -27,6 +17,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
         searchForBook();
     })
 
+    const searchClear = document.getElementById('searchClear');
+    searchClear.addEventListener('click', (event)=> {
+        event.preventDefault();
+        restoreOriginalBookList();
+    })
     if(ifStorageExist) {
         loadDataFromStorage();
     }    
@@ -104,7 +99,7 @@ function addToHTML(bookObject) {
     delButton.setAttribute('data-testid', 'bookItemDeleteButton');
     delButton.style.backgroundColor = 'darkred'
     delButton.addEventListener('click', ()=>{
-        eraseBook(bookObject.id);
+        eraseBook(id);
     })
 
     const editButton = document.createElement('button');
@@ -210,7 +205,7 @@ function findBook(bookId) {
 }
 
 function findBookIndex(bookId) {
-    for(const index = 0; index<datas.length; index++) {
+    for(const index in datas) {
         if(datas[index].id === bookId) {
             return index;
         }
@@ -267,21 +262,73 @@ function editBook(bookId) {
 
 function searchForBook() {
     const searchInput = document.getElementById('searchBookTitle').value.trim().toLowerCase();
-    const returnFindContainer = document.getElementById('returnFindContainer');
+    const bookTarget = datas.filter((book)=> book.title.toLowerCase().includes(searchInput));
 
-    const bookTarget = datas.find((book)=> book.title.toLowerCase() === searchInput);
+    const unfinished = document.getElementById('incompleteBookList');
+    unfinished.innerHTML = '';
 
-    if(bookTarget) {
-        returnFindContainer.innerHTML = 
-        `<h2>Book Found:</h2>
-          <p><strong>Title:</strong> ${datas.title}</p>
-          <p><strong>Author:</strong> ${datas.author}</p>
-          <p><strong>Year:</strong> ${datas.year}</p>
-          <p><strong>Status:</strong> ${datas.isComplete ? 'Selesai' : 'Belum selesai'}</p>
-        `;
+    const finished = document.getElementById('completeBookList');
+    finished.innerHTML = '';
+
+    if(bookTarget.length>0) {
+        bookTarget.forEach((book)=> {
+            const container = document.createElement('div');
+            container.classList.add('dataFinished');
+            container.classList.add(book.isComplete? "dataFinished": "dataUnfinished");
+            container.setAttribute('data-bookid', book.id);
+
+            container.innerHTML = `
+                <h3 data-testid="bookItemTitle">${book.title}</h3>
+                <p data-testid="bookItemAuthor">Penulis : ${book.author}</p>
+                <p data-testid="bookItemYear">Tahun : ${book.year}</p>
+                <div class="${book.isComplete ? 'buttonFinished' : 'buttonUnfinished'}">
+                    <button data-testid="bookItemIsCompleteButton">${book.isComplete ? 'Belum Selesai dibaca' : 'Selesai dibaca'}</button>
+                    <button data-testid="bookItemDeleteButton" style="background-color: darkred;">Hapus buku</button>
+                    <button data-testid="bookItemEditButton" style="background-color: darkgreen;">Edit buku</button>
+                </div>
+            `;
+
+            if(book.isComplete) {
+                finished.appendChild(container);
+            }
+            else {
+                unfinished.appendChild(container);
+            }
+        })
     }
     else {
-        returnFindContainer.innerHTML = `<h2>Buku tidak ditemukan</h2>`;
+        unfinished.innerHTML, finished.innerHTML = `<h3>Buku tidak ditemukan</h3>`
     }
 }
 
+function restoreOriginalBookList() {
+    const incompleteList = document.getElementById('incompleteBookList');
+    const completeList = document.getElementById('completeBookList');
+    
+    incompleteList.innerHTML = '';
+    completeList.innerHTML = '';
+    
+    datas.forEach((book) => {
+        const bookItem = document.createElement('div');
+        bookItem.setAttribute('data-testid', 'bookItem');
+        bookItem.classList.add(book.isComplete ? 'dataFinished' : 'dataUnfinished');
+        bookItem.setAttribute('data-bookid', book.id);
+
+        bookItem.innerHTML = `
+            <h3 data-testid="bookItemTitle">${book.title}</h3>
+            <p data-testid="bookItemAuthor">Penulis : ${book.author}</p>
+            <p data-testid="bookItemYear">Tahun : ${book.year}</p>
+            <div class="${book.isComplete ? 'buttonFinished' : 'buttonUnfinished'}">
+                <button data-testid="bookItemIsCompleteButton">${book.isComplete ? 'Belum Selesai dibaca' : 'Selesai dibaca'}</button>
+                <button data-testid="bookItemDeleteButton" style="background-color: darkred;">Hapus buku</button>
+                <button data-testid="bookItemEditButton" style="background-color: darkgreen;">Edit buku</button>
+            </div>
+        `;
+
+        if (book.isComplete) {
+            completeList.appendChild(bookItem);
+        } else {
+            incompleteList.appendChild(bookItem);
+        }
+    });
+}
