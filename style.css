@@ -6,7 +6,6 @@ body {
     font-family: 'Rubik', 'Times New Roman', Times, serif,sans-serif;;
 }
 
-
 section {
     display: flex;
     flex-direction: column;
@@ -107,7 +106,7 @@ section button:hover {
 
 .dataUnfinished, .dataFinished {
     box-shadow: 1px 2px 5px darkblue;
-    border-radius: 10px;
+    border-radius: 8px;
     padding: 20px;
 }
 
@@ -152,4 +151,17 @@ button#cancel {
     background-color: darkred;
     color: aliceblue;
     border-radius: 20px;
+}
+
+div.bookFound {
+    box-shadow: 1px 2px 5px black;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+}
+
+button#searchClear {
+    width: 60px;
+    background-color: darkred;
+    border-radius: 100%;
 }
