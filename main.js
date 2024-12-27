@@ -97,6 +97,7 @@ function addToHTML(bookObject) {
     const delButton = document.createElement('button');
     delButton.innerText = 'Hapus buku'
     delButton.setAttribute('data-testid', 'bookItemDeleteButton');
+    delButton.setAttribute('id', 'del')
     delButton.style.backgroundColor = 'darkred'
     delButton.addEventListener('click', ()=>{
         eraseBook(id);
@@ -105,24 +106,35 @@ function addToHTML(bookObject) {
     const editButton = document.createElement('button');
     editButton.innerText = 'Edit buku';
     editButton.setAttribute('data-testid', 'bookItemEditButton');
+    editButton.setAttribute('id', 'edit')
     editButton.style.backgroundColor = 'darkgreen'
     editButton.addEventListener('click', ()=> {
         const editContainer = document.getElementById('forEditBook');
         editContainer.style.display = 'inline';
-    })
 
-    const saveButton = document.getElementById('save');
-    saveButton.addEventListener('click', ()=> {
-        const editContainer = document.getElementById('forEditBook');
-        editContainer.style.display = 'none';
-        editBook(bookObject.id);
-    })
+        document.getElementById('editBookFormTitle').value = title;
+        document.getElementById('editBookFormAuthor').value = author;
+        document.getElementById('editBookFormYear').value = year;
+    
+        const saveButton = document.getElementById('save');
+        const saveHandler =  ()=> {
+            editBook(id);
+            cleanUp()
+        }
+        saveButton.addEventListener('click', saveHandler);
+    
+        const cancelButton = document.getElementById('cancel');
+        const cancelHandler =  ()=> {
+            editContainer.style.display = 'none';
+            cleanUp()
+        }
+        cancelButton.addEventListener('click', cancelHandler);
 
-    const cancelButton = document.getElementById('cancel');
-    cancelButton.addEventListener('click', ()=> {
-        const editContainer = document.getElementById('forEditBook');
-        editContainer.style.display = 'none';
-        editBook(bookObject.id);
+        const cleanUp = ()=> {
+            saveButton.removeEventListener('click', saveHandler);
+            cancelButton.removeEventListener('click', cancelHandler);
+        }
+
     })
 
     finishReadButton.setAttribute('data-testid', 'bookItemIsCompleteButton');    
@@ -135,6 +147,7 @@ function addToHTML(bookObject) {
         buttonContainer.setAttribute('class', 'buttonFinished');
 
         finishReadButton.innerText = 'Belum Selesai dibaca';
+        finishReadButton.setAttribute('id', 'unfinish');
 
         finishReadButton.addEventListener('click', ()=> {
             unfinishedRead(bookObject.id);
@@ -150,6 +163,7 @@ function addToHTML(bookObject) {
         buttonContainer.setAttribute('class', 'buttonUnfinished');
 
         finishReadButton.innerText = 'Selesai dibaca'
+        finishReadButton.setAttribute('id', 'finish');
 
         finishReadButton.addEventListener('click', ()=> {
             finishedRead(bookObject.id);
@@ -252,9 +266,19 @@ function editBook(bookId) {
     const editTitle = document.getElementById('editBookFormTitle').value;
     const editAuthor = document.getElementById('editBookFormAuthor').value;
     const editYear = document.getElementById('editBookFormYear').value;
-    bookTarget.title = editTitle || bookTarget.title;
-    bookTarget.author = editAuthor || bookTarget.author;
-    bookTarget.year = editYear || bookTarget.year;
+    
+    if(editTitle) {
+        bookTarget.title = editTitle;
+    }
+    if(editAuthor) {
+        bookTarget.author = editAuthor;    
+    }
+    if(editYear) {
+        bookTarget.year = editYear;
+    }
+    
+    const editContainer = document.getElementById('forEditBook');
+    editContainer.style.display = 'none';
     
     document.dispatchEvent(new Event(RENDER_EVENT));
     saveData()
@@ -271,34 +295,21 @@ function searchForBook() {
     finished.innerHTML = '';
 
     if(bookTarget.length>0) {
-        bookTarget.forEach((book)=> {
-            const container = document.createElement('div');
-            container.classList.add('dataFinished');
-            container.classList.add(book.isComplete? "dataFinished": "dataUnfinished");
-            container.setAttribute('data-bookid', book.id);
-
-            container.innerHTML = `
-                <h3 data-testid="bookItemTitle">${book.title}</h3>
-                <p data-testid="bookItemAuthor">Penulis : ${book.author}</p>
-                <p data-testid="bookItemYear">Tahun : ${book.year}</p>
-                <div class="${book.isComplete ? 'buttonFinished' : 'buttonUnfinished'}">
-                    <button data-testid="bookItemIsCompleteButton">${book.isComplete ? 'Belum Selesai dibaca' : 'Selesai dibaca'}</button>
-                    <button data-testid="bookItemDeleteButton" style="background-color: darkred;">Hapus buku</button>
-                    <button data-testid="bookItemEditButton" style="background-color: darkgreen;">Edit buku</button>
-                </div>
-            `;
-
-            if(book.isComplete) {
-                finished.appendChild(container);
+        if (bookTarget.length > 0) {
+            for (const book of bookTarget) {
+                const bookItem = addToHTML(book); 
+                if (book.isComplete) {
+                    finished.appendChild(bookItem);
+                } else {
+                    unfinished.appendChild(bookItem);
+                }
             }
-            else {
-                unfinished.appendChild(container);
-            }
-        })
-    }
-    else {
-        unfinished.innerHTML, finished.innerHTML = `<h3>Buku tidak ditemukan</h3>`
-    }
+        } 
+        else {
+            unfinished.innerHTML = '<h3>Buku tidak ditemukan</h3>';
+            finished.innerHTML = '<h3>Buku tidak ditemukan</h3>';
+        }
+    }    
 }
 
 function restoreOriginalBookList() {
@@ -308,27 +319,12 @@ function restoreOriginalBookList() {
     incompleteList.innerHTML = '';
     completeList.innerHTML = '';
     
-    datas.forEach((book) => {
-        const bookItem = document.createElement('div');
-        bookItem.setAttribute('data-testid', 'bookItem');
-        bookItem.classList.add(book.isComplete ? 'dataFinished' : 'dataUnfinished');
-        bookItem.setAttribute('data-bookid', book.id);
-
-        bookItem.innerHTML = `
-            <h3 data-testid="bookItemTitle">${book.title}</h3>
-            <p data-testid="bookItemAuthor">Penulis : ${book.author}</p>
-            <p data-testid="bookItemYear">Tahun : ${book.year}</p>
-            <div class="${book.isComplete ? 'buttonFinished' : 'buttonUnfinished'}">
-                <button data-testid="bookItemIsCompleteButton">${book.isComplete ? 'Belum Selesai dibaca' : 'Selesai dibaca'}</button>
-                <button data-testid="bookItemDeleteButton" style="background-color: darkred;">Hapus buku</button>
-                <button data-testid="bookItemEditButton" style="background-color: darkgreen;">Edit buku</button>
-            </div>
-        `;
-
+    for (const book of datas) {
+        const bookItem = addToHTML(book); // Use addToHTML to create the book DOM elements
         if (book.isComplete) {
             completeList.appendChild(bookItem);
         } else {
             incompleteList.appendChild(bookItem);
         }
-    });
+    }
 }
